@@ -35,94 +35,70 @@ export default {
   methods: {
     initFiexedheaderWrapperElement() {
       if (this.fixedTop) {
-        const tableEl = this.$refs.table.$el;
-        const headerWrapperEl = tableEl?.querySelector(
-          ".el-table__header-wrapper"
-        );
-        headerWrapperEl.style.position = "sticky";
-        headerWrapperEl.style.top = `${this.topDistance}px`;
-        const headerEl = headerWrapperEl.querySelector(".el-table__header");
-        this.tableHeaderEl = headerEl;
+        const tableEl = this.$refs.table.$el
+        const headerWrapperEl = tableEl?.querySelector('.el-table__header-wrapper')
+        headerWrapperEl.style.position = 'sticky'
+        headerWrapperEl.style.top = `${this.topDistance}px`
+        const headerEl = headerWrapperEl.querySelector('.el-table__header')
+        this.tableHeaderEl = headerEl
 
-        if (!tableEl || !headerWrapperEl) return;
+        if (!tableEl || !headerWrapperEl) return
 
         setTimeout(() => {
-          const fixHeaderRightWrap = tableEl?.querySelector(
-            ".el-table__fixed-right"
-          );
-          const fixHeaderLeftWrap = tableEl?.querySelector(".el-table__fixed");
-          this.hasFixedCol = [fixHeaderLeftWrap, fixHeaderRightWrap].some(
-            (el) => !!el
-          );
+          const fixHeaderRightWrap = tableEl?.querySelector('.el-table__fixed-right')
+          const fixHeaderLeftWrap = tableEl?.querySelector('.el-table__fixed')
+          this.hasFixedCol = [fixHeaderLeftWrap, fixHeaderRightWrap].some(el => !!el);
 
-          [fixHeaderLeftWrap, fixHeaderRightWrap].forEach(
-            (fixHeaderWrap, index) => {
-              if (!fixHeaderWrap) return;
-              const cloneHeaderContainerEl = fixHeaderWrap.cloneNode(false);
-              cloneHeaderContainerEl.style.height = "auto";
-              const fixedheaderWrapperEl = fixHeaderWrap.querySelector(
-                ".el-table__fixed-header-wrapper"
-              );
-              const cloneheaderWrapperEl = fixedheaderWrapperEl.cloneNode(true);
-              cloneHeaderContainerEl.appendChild(cloneheaderWrapperEl);
+          [fixHeaderLeftWrap, fixHeaderRightWrap].forEach((fixHeaderWrap, index) => {
+            if (!fixHeaderWrap) return
+            const cloneHeaderContainerEl = fixHeaderWrap.cloneNode(false)
+            cloneHeaderContainerEl.style.height = 'auto'
+            const fixedheaderWrapperEl = fixHeaderWrap.querySelector('.el-table__fixed-header-wrapper')
+            cloneHeaderContainerEl.appendChild(fixedheaderWrapperEl)
 
-              if (index === 0) {
-                headerWrapperEl.insertBefore(
-                  cloneHeaderContainerEl,
-                  headerWrapperEl.firstChild
-                );
-                headerEl.style[
-                  "margin-left"
-                ] = `-${cloneHeaderContainerEl.style.width}`;
-                this.fixedLeftEl = cloneHeaderContainerEl;
-              } else {
-                headerWrapperEl.appendChild(cloneHeaderContainerEl);
-                this.fixedRightEl = cloneHeaderContainerEl;
-              }
-              fixedheaderWrapperEl.style.display = "none";
+            if (index === 0) {
+              headerWrapperEl.insertBefore(cloneHeaderContainerEl, headerWrapperEl.firstChild)
+              headerEl.style['margin-left'] = `-${cloneHeaderContainerEl.style.width}`
+              this.fixedLeftEl = cloneHeaderContainerEl
+            } else {
+              headerWrapperEl.appendChild(cloneHeaderContainerEl)
+              this.fixedRightEl = cloneHeaderContainerEl
             }
-          );
+          })
 
           if (this.hasFixedCol) {
-            headerWrapperEl.style.display = "flex";
-            window.addEventListener("resize", this.handleResize);
+            headerWrapperEl.style.display = 'flex'
+            window.addEventListener('resize', this.handleResize)
           }
-        }, 0);
+        }, 0)
       }
     },
-    handleResize: throttle(
-      function () {
-        const tableEl = this.$refs.table.$el;
-        [this.fixedLeftEl, this.fixedRightEl].forEach((fixedEl, index) => {
-          if (!fixedEl) return;
+    handleResize: throttle(function() {
+      const tableEl = this.$refs.table.$el;
+      [this.fixedLeftEl, this.fixedRightEl].forEach((fixedEl, index) => {
+        if (!fixedEl) return
 
-          let fixWrapper = null;
-          if (index === 0) {
-            fixWrapper = tableEl?.querySelector(":scope >.el-table__fixed");
-          } else {
-            fixWrapper = tableEl?.querySelector(
-              ":scope >.el-table__fixed-right"
-            );
+        let fixWrapper = null
+        if (index === 0) {
+          fixWrapper = tableEl?.querySelector(':scope >.el-table__fixed')
+        } else {
+          fixWrapper = tableEl?.querySelector(':scope >.el-table__fixed-right')
+        }
+
+        if (!fixWrapper) return
+        const currentWidth = fixedEl.style.width
+        const wrapperWidth = fixWrapper?.style.width
+        if (!!wrapperWidth && wrapperWidth !== currentWidth) {
+          fixedEl.style.width = wrapperWidth
+          if (index === 0 && this.tableHeaderEl) {
+            this.tableHeaderEl.style['margin-left'] = `-${wrapperWidth}`
           }
-
-          if (!fixWrapper) return;
-          const currentWidth = fixedEl.style.width;
-          const wrapperWidth = fixWrapper?.style.width;
-          if (!!wrapperWidth && wrapperWidth !== currentWidth) {
-            fixedEl.style.width = wrapperWidth;
-
-            if (index === 0 && this.tableEl) {
-              this.tableEl.style["margin-left"] = `-${wrapperWidth}`;
-            }
-          }
-        });
-      },
-      500,
-      {
-        leading: false,
-        trailing: true,
-      }
-    ),
+        }
+      })
+    }, 500, {
+      leading: false,
+      trailing: true
+    })
   },
   render() {
     const { columns } = this.$props;
@@ -214,8 +190,7 @@ export default {
     border-top: 1px solid #e9ecef;
     z-index: 5;
 
-    .el-table__fixed,
-    .el-table__fixed-right {
+    .el-table__fixed, .el-table__fixed-right {
       position: sticky;
       height: auto;
       flex-shrink: 0;
@@ -223,14 +198,14 @@ export default {
     }
   }
 
-  .el-table__header-wrapper:has(+ .is-scrolling-right, + .is-scrolling-none) {
+  .el-table__header-wrapper:has(+.is-scrolling-right, +.is-scrolling-none) {
     .el-table__fixed-right {
       box-shadow: none;
     }
   }
 
-  .el-table__header-wrapper:has(+ .is-scrolling-left, + .is-scrolling-none) {
-    .el-table__fixed {
+  .el-table__header-wrapper:has(+.is-scrolling-left, +.is-scrolling-none) {
+    .el-table__fixed{
       box-shadow: none;
     }
   }
