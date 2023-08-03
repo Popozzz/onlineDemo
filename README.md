@@ -4,4 +4,4 @@
 
 #### Demo 地址
 
-[在线 demo](https://popozzz.github.io/onlineDemo/)
+[在线 demo](https://popozzz.github.io/onlineDemo/#/fixedTopTable)
