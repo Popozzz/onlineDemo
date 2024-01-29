@@ -22,6 +22,13 @@ const routes = [
     }
   },
   {
+    path: '/cssFixedTopTable',
+    component: () => import('@/pages/cssFixedTopTable'),
+    meta: {
+      title: '纯CSS表格吸顶'
+    }
+  },
+  {
     path: '/keywordHighlight',
     component: () => import('@/pages/keywordHighlight'),
     meta: {

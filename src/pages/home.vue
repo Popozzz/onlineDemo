@@ -8,6 +8,11 @@
         </router-link>
       </li>
       <li>
+        <router-link to="/cssFixedTopTable">
+          <el-link type="primary">纯CSS表格吸顶</el-link>
+        </router-link>
+      </li>
+      <li>
         <router-link to="/keywordHighlight">
           <el-link type="primary">关键字高亮</el-link>
         </router-link>

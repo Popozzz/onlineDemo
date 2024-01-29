@@ -25,7 +25,7 @@ export default {
   },
   watch: {},
   mounted() {
-    this.initFiexedheaderWrapperElement();
+    this.initFixedHeaderWrapperElement();
   },
   beforeDestroy() {
     if (this.hasFixedCol) {
@@ -33,7 +33,7 @@ export default {
     }
   },
   methods: {
-    initFiexedheaderWrapperElement() {
+    initFixedHeaderWrapperElement() {
       if (this.fixedTop) {
         const tableEl = this.$refs.table.$el
         const headerWrapperEl = tableEl?.querySelector('.el-table__header-wrapper')
@@ -53,8 +53,8 @@ export default {
             if (!fixHeaderWrap) return
             const cloneHeaderContainerEl = fixHeaderWrap.cloneNode(false)
             cloneHeaderContainerEl.style.height = 'auto'
-            const fixedheaderWrapperEl = fixHeaderWrap.querySelector('.el-table__fixed-header-wrapper')
-            cloneHeaderContainerEl.appendChild(fixedheaderWrapperEl)
+            const fixedHeaderWrapperEl = fixHeaderWrap.querySelector('.el-table__fixed-header-wrapper')
+            cloneHeaderContainerEl.appendChild(fixedHeaderWrapperEl)
 
             if (index === 0) {
               headerWrapperEl.insertBefore(cloneHeaderContainerEl, headerWrapperEl.firstChild)
